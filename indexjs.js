@@ -221,7 +221,7 @@ class Card extends React.Component{
                 <h4 style={styles.Ranking}>#{index}</h4>
                 <img src={source.owner.avatar_url} alt={source.name} style={styles.cardImg} />
                 <h2 style={styles.cardTitle}>
-                    <a style={{...styles.cardLink,...styles.cardA}} target="_blank">
+                    <a href={source.html_url} style={{...styles.cardLink,...styles.cardA}} target="_blank">
                         {source.owner.login}
                     </a>
                 </h2>
