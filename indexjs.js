@@ -256,7 +256,7 @@ class Card extends React.Component{
 class Loading extends React.Component {
     render() {
         return <div style={styles.center}>
-            正在加载...
+            正在加载<i class="fa fa-spinner fa-spin"></i>
         </div>;
     }
 }
