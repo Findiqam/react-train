@@ -201,7 +201,7 @@ class Menu extends React.Component{
                 query: 'stars:>1+language:css'
             }
         ];
-        const link=links.map((item,key)=><li style={styles.li}><button onClick={() => onClick(item.query)} style={current == item.query ? styles.btnActive:styles.btnDefault}>{item.title}</button></li>);
+        const link=links.map((item,key)=><li style={styles.li} key={key}><button onClick={() => onClick(item.query)} style={current == item.query ? styles.btnActive:styles.btnDefault}>{item.title}</button></li>);
         return (
             <ul style={styles.ul}>
                 {link}
@@ -229,7 +229,7 @@ class Card extends React.Component{
                     <li style={styles.cardListLi}>
                         <div>
                             <div style={styles.cardMan}>
-                                <i class="fa fa-user fa-fw" style={{...styles.icon,color:'rgb(255, 191, 116)'}}></i>
+                                <i className="fa fa-user fa-fw" style={{...styles.icon,color:'rgb(255, 191, 116)'}}></i>
                                 <a href={source.owner.html_url} target="_blank" style={{...styles.cardListA,...styles.cardA}}>
                                 {source.owner.login}
                                 </a>
@@ -237,15 +237,15 @@ class Card extends React.Component{
                         </div>
                     </li>
                     <li style={styles.cardListLi}>
-                        <i class="fa fa-star fa-fw" style={{...styles.icon,color:'rgb(255, 215, 0)'}}></i>
+                        <i className="fa fa-star fa-fw" style={{...styles.icon,color:'rgb(255, 215, 0)'}}></i>
                         {source.stargazers_count} stars
                     </li>
                     <li style={styles.cardListLi}>
-                        <i class="fa fa-code-fork fa-fw" style={{...styles.icon,color:'rgb(129, 195, 245)'}}></i>
+                        <i className="fa fa-code-fork fa-fw" style={{...styles.icon,color:'rgb(129, 195, 245)'}}></i>
                         {source.forks} forks
                     </li>
                     <li style={styles.cardListLi}>
-                        <i class="fa fa-warning fa-fw" style={{...styles.icon,color:'rgb(241, 138, 147)'}}></i>
+                        <i className="fa fa-warning fa-fw" style={{...styles.icon,color:'rgb(241, 138, 147)'}}></i>
                         {source.open_issues} Open issues
                     </li>
                 </ul>
@@ -256,7 +256,7 @@ class Card extends React.Component{
 class Loading extends React.Component {
     render() {
         return <div style={styles.center}>
-            正在加载<i class="fa fa-spinner fa-spin"></i>
+            正在加载<i className="fa fa-spinner fa-spin"></i>
         </div>;
     }
 }
