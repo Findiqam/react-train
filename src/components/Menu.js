@@ -6,6 +6,7 @@ import styles from './styles';
 
 //分类菜单
 class Menu extends React.Component{
+    
     render() {
         const {onClick,current}=this.props;
         const links = [
