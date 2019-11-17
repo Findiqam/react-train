@@ -1,4 +1,6 @@
-import _ from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios';     
 
 const styles={
     light:{
@@ -282,16 +284,14 @@ class ContentList extends React.Component{
     search = async () => {
         const {query} = this.props;
         const url = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&type=Repositories`;
-        console.log('url', url);
         this.setState({ loading: true })
         try {
             const res = await axios.get(url)
-            console.log('res', res.data)
             this.setState({
                 items: res.data.items
             })
         } catch (e) {
-            console.log('error', e)
+            
         }
         this.setState({ loading: false });
     }
@@ -345,7 +345,7 @@ class Content extends React.Component{
 class Footer extends React.Component{
     render(){
         return(
-            <div></div>
+            <div style={{...styles.center,backgroundColor:'rgba(0, 0, 0, 0.08)'}}>版权所有@好多鱼</div>
         )
     }
 }
@@ -373,7 +373,4 @@ class App extends React.Component {
         );
     }
 }
-ReactDOM.render(
-    <App />,
-    document.getElementById('app')
-);
+export default App;
