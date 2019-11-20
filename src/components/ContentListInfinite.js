@@ -12,11 +12,9 @@ class ContentListInfinite extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            oldQuery:props.query,
             hasMore:true,
             pageNum:1,
             pageEnd:3,
-            loading: false,
             items: []
         };
     }
@@ -34,7 +32,7 @@ class ContentListInfinite extends React.Component{
     }
     search = async () => {
         const {query} = this.props;
-        const {oldQuery,hasMore,pageNum,pageEnd,loading,items}=this.state;
+        const {hasMore,pageNum,pageEnd,items}=this.state;
         if(pageNum>pageEnd){
             this.setState({
                 hasMore:false
@@ -56,7 +54,7 @@ class ContentListInfinite extends React.Component{
         })
     }
     render() {
-        const {oldQuery,hasMore,pageNum,pageEnd,loading,items} = this.state;
+        const {hasMore,pageNum,pageEnd,items} = this.state;
         const {islight}=this.props;
         const cards = items.map((item, key) =>
             <Card key={key} source={item} index={key + 1} islight={islight}></Card>
