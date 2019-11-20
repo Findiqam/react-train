@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import styles from './styles'
 import Menu from './Menu';
 import ContentList from './ContentList';
+import ContentListInfinite from './ContentListInfinite';
 
 //内容部分
 class Popular extends React.Component{
@@ -22,7 +23,7 @@ class Popular extends React.Component{
         return(
             <div>
                 <Menu onClick={this.onClick} current={query}></Menu>
-                <ContentList query={query} islight={islight}></ContentList>
+                <ContentListInfinite query={query} islight={islight}></ContentListInfinite>
             </div>
         )
     }

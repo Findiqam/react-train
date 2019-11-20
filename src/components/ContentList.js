@@ -43,9 +43,11 @@ class ContentList extends React.Component{
         const cards = items.map((item, key) =>
             <Card key={key} source={item} index={key + 1} islight={islight}></Card>
         );
-        return <ul style={styles.grid}>
-            {loading ? <Loading></Loading> : cards}
-        </ul>;
+        return (
+            <ul style={styles.grid}>
+                {loading ? <Loading></Loading> : cards}
+            </ul>
+        );
     }
 }
 export default ContentList;
