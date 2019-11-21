@@ -13,18 +13,23 @@ class BattleStart extends React.Component{
         this.state={
             getOne:false,//判断第一个是否已经获取
             getTwo:false,//判断第二个是否已经获取
-            winner:""//胜利者是谁
         }
     }
     getOne= async ()=>{
         const inputOne=this.refs.inputOne.value;
         if (inputOne.match(/^[ ]*$/)) {
             alert("请输入项目名称")
+            this.refs.inputOne.value="";
             return
         }
         const url = `https://api.github.com/search/repositories?q=${inputOne} in:name&sort=stars&order=desc&type=Repositories&per_page=1`;
         try {
             const res = await axios.get(url)
+            if(res.data.items.length==0){
+                alert("未查询到项目,请重新输入")
+                this.refs.inputOne.value="";
+                return
+            }
             this.props.setOne(res.data.items[0])
             this.setState({getOne:true})
         } catch (e) {
@@ -37,9 +42,19 @@ class BattleStart extends React.Component{
     }
     getTwo= async ()=>{
         const inputTwo=this.refs.inputTwo.value;
+        if (inputTwo.match(/^[ ]*$/)) {
+            alert("请输入项目名称")
+            this.refs.inputTwo.value="";
+            return
+        }
         const url = `https://api.github.com/search/repositories?q=${inputTwo} in:name&sort=stars&order=desc&type=Repositories&per_page=1`;
         try {
             const res = await axios.get(url)
+            if(res.data.items.length==0){
+                alert("未查询到项目,请重新输入")
+                this.refs.inputTwo.value="";
+                return
+            }
             this.props.setTwo(res.data.items[0])
             this.setState({getTwo:true})
         } catch (e) {
@@ -51,30 +66,54 @@ class BattleStart extends React.Component{
         this.setState({getTwo:false})
     }
     render() {
-        const sty={
-            width:50,
-            height:50
+        const battleStyles={
+            iFont:{
+                fontSize:200
+            },
+            iFontDel:{
+                fontSize:20
+            },
+            getImg:{
+                width:'50px',
+                height:'50px',
+                margin:'5px'
+            }
         }
         const {battleStart,playerOne,playerTwo}=this.props;
         const {getOne,getTwo}=this.state;
         return (
-            <div>
+            <div className="instructions-container">
+                <div style={styles.center}><h1>Instructions</h1></div>
+                <div className="flex flex-wrap flex-space-around">
+                    <div style={styles.center}>
+                        <div className="instruction" style={styles.center}>Enter two Github project</div>
+                        <i className="fa fa-git-square " style={{...battleStyles.iFont,color: 'rgb(255, 191, 116)'}}></i>
+                    </div>
+                    <div style={styles.center}>
+                    <div className="instruction" style={styles.center}>Battle</div>
+                    <i className="fa fa-fighter-jet" style={{...battleStyles.iFont,color: 'rgb(114, 114, 114)'}}></i>
+                    </div>
+                    <div style={styles.center}>
+                    <div className="instruction" style={styles.center}>See the winner</div>
+                    <i className="fa fa-hand-peace-o" style={{...battleStyles.iFont,color: 'rgb(255, 215, 0)'}}></i>
+                    </div>
+                </div>
                 <div style={styles.center}>
                     <h1>Players</h1>
                 </div>
-                <div className="flex flex-nowrap flex-space-around">
-                    <div>
-                        <div>Player One</div>
-                        {getOne ? <div><img src={playerOne.owner.avatar_url} alt={playerOne.name} style={sty} /><button onClick={this.rmOne}>Del</button></div> : <div><input ref="inputOne"></input><button onClick={this.getOne}>Submit</button></div>}
+                <div className="flex flex-wrap flex-space-around">
+                    <div className="instruction">
+                        <div className="playerh2">Player One</div>
+                        {getOne ? <div className="getPlayer"><img src={playerOne.owner.avatar_url} alt={playerOne.name} style={battleStyles.getImg} />{playerOne.name}<button onClick={this.rmOne} className="button-del"><i className="fa fa-times-circle" style={{...battleStyles.iFontDel,color: 'rgb(194, 57, 42)'}}></i></button></div> : <div><input ref="inputOne" placeholder="github project" className="player-input"></input><button onClick={this.getOne} className="button-submit">Submit</button></div>}
                     </div>
                     
-                    <div>
-                        <div>Player Two</div>
-                        {getTwo ? <div><img src={playerTwo.owner.avatar_url} alt={playerTwo.name} style={sty} /><button onClick={this.rmTwo}>Del</button></div> : <div><input ref="inputTwo"></input><button onClick={this.getTwo}>Submit</button></div>}
+                    <div className="instruction">
+                        <div className="playerh2">Player Two</div>
+                        {getTwo ? <div className="getPlayer"><img src={playerTwo.owner.avatar_url} alt={playerTwo.name} style={battleStyles.getImg} />{playerTwo.name}<button onClick={this.rmTwo} className="button-del"><i className="fa fa-times-circle" style={{...battleStyles.iFontDel,color: 'rgb(194, 57, 42)'}}></i></button></div> : <div><input ref="inputTwo" placeholder="github project" className="player-input"></input><button onClick={this.getTwo} className="button-submit">Submit</button></div>}
                     </div>
                 </div>
                 {getOne && getTwo && <div style={styles.center}>
-                <button onClick={battleStart}>Battle</button>
+                <button onClick={battleStart} className="button-buttle">Battle</button>
                 </div>}
             </div>
         );
@@ -96,7 +135,7 @@ class BattleEnd extends React.Component{
                 </ul>
                 </div>
                 <div style={styles.center}>
-                <button onClick={resetClick}>Reset</button>
+                <button onClick={resetClick} className="button-reset">Reset</button>
                 </div>
             </div>
         );
