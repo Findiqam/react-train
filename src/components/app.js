@@ -7,7 +7,6 @@ import Content from './Content';
 import Footer from './Footer';
 
 
-
 //App
 class App extends React.Component {
     constructor(props) {
