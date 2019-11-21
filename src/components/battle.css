@@ -1,0 +1,15 @@
+
+.test{
+    text-align: center;
+    width: 50px;
+    height: 50px;
+}
+.flex{
+    display: flex;
+}
+.flex-nowrap{
+    flex-wrap: nowrap;
+}
+.flex-space-around{
+    justify-content: space-around;
+}

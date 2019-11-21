@@ -12,7 +12,7 @@ import Footer from './Footer';
 class App extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {islight:true,nowpages:'Popular'};
+        this.state = {islight:true,nowpages:'Battle'};
     }
     lightClick=()=>{
         this.setState(state => ({

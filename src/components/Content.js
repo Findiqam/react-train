@@ -11,7 +11,7 @@ class Content extends React.Component{
         const {islight,nowpages}=this.props;
         return(
             <div>
-                {nowpages=='Popular'?<Popular islight={islight}></Popular>:<Battle></Battle>}  
+                {nowpages=='Popular'?<Popular islight={islight}></Popular>:<Battle islight={islight}></Battle>}  
             </div>
         )
     }
