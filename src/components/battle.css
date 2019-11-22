@@ -71,3 +71,7 @@
 .lineheight{
     line-height: 60px;
 }
+.disable-button{
+    opacity:0.5;
+    pointer-events:none;
+ }

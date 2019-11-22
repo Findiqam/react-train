@@ -13,6 +13,8 @@ class BattleStart extends React.Component{
         this.state={
             getOne:false,//判断第一个是否已经获取
             getTwo:false,//判断第二个是否已经获取
+            loadingOne: false,
+            loadingTwo: false,
         }
     }
     getOne= async ()=>{
@@ -23,6 +25,7 @@ class BattleStart extends React.Component{
             return
         }
         const url = `https://api.github.com/search/repositories?q=${inputOne} in:name&sort=stars&order=desc&type=Repositories&per_page=1`;
+        this.setState({ loadingOne: true })
         try {
             const res = await axios.get(url)
             if(res.data.items.length==0){
@@ -35,6 +38,7 @@ class BattleStart extends React.Component{
         } catch (e) {
             
         }
+        this.setState({ loadingOne: false })
     }
     rmOne=()=>{
         this.props.setOne({})
@@ -48,6 +52,7 @@ class BattleStart extends React.Component{
             return
         }
         const url = `https://api.github.com/search/repositories?q=${inputTwo} in:name&sort=stars&order=desc&type=Repositories&per_page=1`;
+        this.setState({ loadingTwo: true })
         try {
             const res = await axios.get(url)
             if(res.data.items.length==0){
@@ -60,10 +65,37 @@ class BattleStart extends React.Component{
         } catch (e) {
             
         }
+        this.setState({ loadingTwo: false })
     }
     rmTwo=()=>{
         this.props.setTwo({})
         this.setState({getTwo:false})
+    }
+    oneInputChange=()=>{
+        const inputOne=this.refs.inputOne.value;
+        if (inputOne.match(/^[ ]*$/)) {
+            this.refs.submitOne.className="button-submit disable-button";
+            return
+        }
+        this.refs.submitOne.className="button-submit";
+    }
+    twoInputChange=()=>{
+        const inputTwo=this.refs.inputTwo.value;
+        if (inputTwo.match(/^[ ]*$/)) {
+            this.refs.submitTwo.className="button-submit disable-button";
+            return
+        }
+        this.refs.submitTwo.className="button-submit";
+    }
+    oneEnter=(e)=>{
+        if (e.key == "Enter") {
+            this.getOne();
+        }
+    }
+    twoEnter=(e)=>{
+        if (e.key == "Enter") {
+            this.getTwo();
+        }
     }
     render() {
         const battleStyles={
@@ -80,7 +112,7 @@ class BattleStart extends React.Component{
             }
         }
         const {battleStart,playerOne,playerTwo}=this.props;
-        const {getOne,getTwo}=this.state;
+        const {getOne,getTwo,loadingOne,loadingTwo}=this.state;
         return (
             <div className="instructions-container">
                 <div style={styles.center}><h1>Instructions</h1></div>
@@ -104,12 +136,52 @@ class BattleStart extends React.Component{
                 <div className="flex flex-wrap flex-space-around">
                     <div className="instruction">
                         <div className="playerh2">Player One</div>
-                        {getOne ? <div className="getPlayer"><img src={playerOne.owner.avatar_url} alt={playerOne.name} style={battleStyles.getImg} />{playerOne.name}<button onClick={this.rmOne} className="button-del"><i className="fa fa-times-circle" style={{...battleStyles.iFontDel,color: 'rgb(194, 57, 42)'}}></i></button></div> : <div><input ref="inputOne" placeholder="github project" className="player-input"></input><button onClick={this.getOne} className="button-submit">Submit</button></div>}
+                        {
+                            loadingOne ?
+                                <div>
+                                    正在查找
+                                    <i className="fa fa-spinner fa-spin"></i>
+                                </div>
+                                :
+                                getOne ?
+                                    <div className="getPlayer">
+                                        <img src={playerOne.owner.avatar_url} alt={playerOne.name} style={battleStyles.getImg} />
+                                        {playerOne.name}
+                                        <button onClick={this.rmOne} className="button-del">
+                                            <i className="fa fa-times-circle" style={{ ...battleStyles.iFontDel, color: 'rgb(194, 57, 42)' }}></i>
+                                        </button>
+                                    </div>
+                                    :
+                                    <div>
+                                        <input ref="inputOne" placeholder="github project" className="player-input" onChange={this.oneInputChange} onKeyDown={this.oneEnter}></input>
+                                        <button onClick={this.getOne} className="button-submit disable-button" ref="submitOne">Submit</button>
+                                    </div>
+                        }
                     </div>
                     
                     <div className="instruction">
                         <div className="playerh2">Player Two</div>
-                        {getTwo ? <div className="getPlayer"><img src={playerTwo.owner.avatar_url} alt={playerTwo.name} style={battleStyles.getImg} />{playerTwo.name}<button onClick={this.rmTwo} className="button-del"><i className="fa fa-times-circle" style={{...battleStyles.iFontDel,color: 'rgb(194, 57, 42)'}}></i></button></div> : <div><input ref="inputTwo" placeholder="github project" className="player-input"></input><button onClick={this.getTwo} className="button-submit">Submit</button></div>}
+                        {
+                            loadingTwo ?
+                                <div>
+                                    正在查找
+                                    <i className="fa fa-spinner fa-spin"></i>
+                                </div>
+                                :
+                                getTwo ?
+                                    <div className="getPlayer">
+                                        <img src={playerTwo.owner.avatar_url} alt={playerTwo.name} style={battleStyles.getImg} />
+                                        {playerTwo.name}
+                                        <button onClick={this.rmTwo} className="button-del">
+                                            <i className="fa fa-times-circle" style={{ ...battleStyles.iFontDel, color: 'rgb(194, 57, 42)' }}></i>
+                                        </button>
+                                    </div>
+                                    :
+                                    <div>
+                                        <input ref="inputTwo" placeholder="github project" className="player-input" onChange={this.twoInputChange} onKeyDown={this.twoEnter}></input>
+                                        <button onClick={this.getTwo} className="button-submit disable-button" ref="submitTwo">Submit</button>
+                                    </div>
+                        }
                     </div>
                 </div>
                 {getOne && getTwo && <div style={styles.center}>
