@@ -6,40 +6,52 @@ import styles from './styles';
 import './battle.css'
 import Card from './Card';
 
-
+//查找项目面板
 class BattleStart extends React.Component{
     constructor(props) {
         super(props);
         this.state={
             getOne:false,//判断第一个是否已经获取
             getTwo:false,//判断第二个是否已经获取
-            loadingOne: false,
-            loadingTwo: false,
+            loadingOne: false,//第一个是否在查找
+            loadingTwo: false,//第二个是否在查找
         }
     }
+    //查找第一个player
     getOne= async ()=>{
+        //获取player one 输入框的值
         const inputOne=this.refs.inputOne.value;
+        //判断是不是空的
         if (inputOne.match(/^[ ]*$/)) {
+            //如果为空，提示，删掉输入框多余空格，return，下面的不做了
             alert("请输入项目名称")
             this.refs.inputOne.value="";
             return
         }
+        //查找项目的url
         const url = `https://api.github.com/search/repositories?q=${inputOne} in:name&sort=stars&order=desc&type=Repositories&per_page=1`;
+        //开始查找
         this.setState({ loadingOne: true })
         try {
             const res = await axios.get(url)
+            //判断返回值是空的嘛
             if(res.data.items.length==0){
+                //空的，提示，return
                 alert("未查询到项目,请重新输入")
                 this.refs.inputOne.value="";
                 return
             }
+            //能到这里说明返回值不空，调用battle里的setone函数把获取到的项目存储起来
             this.props.setOne(res.data.items[0])
+            //标识已经找到
             this.setState({getOne:true})
         } catch (e) {
             
         }
+        //查找完成
         this.setState({ loadingOne: false })
     }
+    //重新查找项目
     rmOne=()=>{
         this.props.setOne({})
         this.setState({getOne:false})
@@ -71,9 +83,11 @@ class BattleStart extends React.Component{
         this.props.setTwo({})
         this.setState({getTwo:false})
     }
+    //输入框里的值改变时触发，主要作用是实现输入框里的值不为空的时候submit变的可以点击
     oneInputChange=()=>{
         const inputOne=this.refs.inputOne.value;
         if (inputOne.match(/^[ ]*$/)) {
+            //disabled-button这个样式设置了按钮不可点击
             this.refs.submitOne.className="button-submit disable-button";
             return
         }
@@ -87,6 +101,7 @@ class BattleStart extends React.Component{
         }
         this.refs.submitTwo.className="button-submit";
     }
+    //当焦点在输入框one并且按下enter键的时候
     oneEnter=(e)=>{
         if (e.key == "Enter") {
             this.getOne();
@@ -191,11 +206,11 @@ class BattleStart extends React.Component{
         );
     }
 }
+//比较结果展示面板
 class BattleEnd extends React.Component{
     constructor(props) {
         super(props);
     }
-    
     render() {
         const {playerOne,playerTwo,winner,resetClick,islight}=this.props;
         return (
@@ -220,10 +235,11 @@ class Battle extends React.Component{
         this.state={
             playerOne:{},//存储第一个获取的数据
             playerTwo:{},//存储第二个获取的数据
-            battle:false,//判断是否已经比较
+            battle:false,//判断是否已经比较，如果未比较，展示battlestart面板，如果已经比较，展示battleend面板
             winner:""//胜利者是谁
         }
     }
+    //通过参数设置存储第一个获取的值
     setOne=(inOne)=>{
         this.setState({
             playerOne:inOne
@@ -234,25 +250,31 @@ class Battle extends React.Component{
             playerTwo:inTwo
         })
     }
+    //开始比较两个项目
     battleStart=()=>{
+        //从state中取出获取到的两个项目
         const {playerOne,playerTwo}=this.state;
         if(playerOne.stargazers_count>playerTwo.stargazers_count){
+            //one赢了
             this.setState({
                 battle:true,
                 winner:playerOne.name
             })
         }else if(playerOne.stargazers_count==playerTwo.stargazers_count){
+            //平局
             this.setState({
                 battle:true,
                 winner:""
             })
         } else{
+            //two赢了
             this.setState({
                 battle:true,
                 winner:playerTwo.name
             })
         }      
     }
+    //重新比较
     resetClick=()=>{
         this.setState({
             playerOne:{},
