@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 import styles from './styles'
 
 //头部的链接：Popular Battle
@@ -10,10 +15,10 @@ class LinkList extends React.Component {
         return (
             <ul style={styles.navUl}>
                 <li style={styles.navLi}>
-                    <button style={nowpages=='Popular'?styles.btnActive:styles.btnDefault} onClick={()=>pagesClick('Popular')}>Popular</button>
+                <Link to="/Popular" style={styles.btnDefault}>Popular</Link>
                 </li>
                 <li style={styles.navLi}>
-                    <button style={nowpages=='Battle'?styles.btnActive:styles.btnDefault} onClick={()=>pagesClick('Battle')}>Battle</button>
+                <Link to="/Battle" style={styles.btnDefault}>Battle</Link>
                 </li>
             </ul>
         );

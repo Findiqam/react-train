@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 import styles from './styles'
 import Popular from './Popular';
 import Battle from './Battle';
@@ -11,7 +16,17 @@ class Content extends React.Component{
         const {islight,nowpages}=this.props;
         return(
             <div>
-                {nowpages=='Popular'?<Popular islight={islight}></Popular>:<Battle islight={islight}></Battle>}  
+                <Switch>
+                    <Route exact path="/">
+                    <Popular islight={islight}></Popular>
+                    </Route>
+                    <Route path="/Popular">
+                    <Popular islight={islight}></Popular>
+                    </Route>
+                    <Route path="/Battle">
+                    <Battle islight={islight}></Battle>
+                    </Route>
+                </Switch>
             </div>
         )
     }

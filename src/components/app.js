@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import {
+    HashRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 import styles from './styles';
 import Header from './Header';
 import Content from './Content';
@@ -26,8 +31,10 @@ class App extends React.Component {
         return (
             <div style={islight ? styles.light : styles.dark}>
                 <div style={styles.container}>
-                    <Header onClick={this.lightClick} islight={islight} pagesClick={this.pagesClick} nowpages={nowpages}></Header>
-                    <Content islight={islight} nowpages={nowpages}></Content>
+                    <Router>
+                        <Header onClick={this.lightClick} islight={islight} pagesClick={this.pagesClick} nowpages={nowpages}></Header>
+                        <Content islight={islight} nowpages={nowpages}></Content>
+                    </Router>
                     <Footer></Footer>
                 </div>
             </div>
