@@ -3,7 +3,7 @@ import {
     HashRouter as Router,
     Switch,
     Route,
-    Link
+    NavLink
   } from "react-router-dom";
 import styles from './styles';
 
@@ -15,10 +15,10 @@ class LinkList extends React.Component {
         return (
             <ul style={styles.navUl}>
                 <li style={styles.navLi}>
-                <Link to="/Popular" style={styles.btnDefault}>Popular</Link>
+                <NavLink to="/Popular" className="btn-default" activeClassName="btn-active">Popular</NavLink>
                 </li>
                 <li style={styles.navLi}>
-                <Link to="/Battle" style={styles.btnDefault}>Battle</Link>
+                <NavLink to="/Battle" className="btn-default" activeClassName="btn-active">Battle</NavLink>
                 </li>
             </ul>
         );

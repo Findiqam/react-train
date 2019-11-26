@@ -33,3 +33,22 @@ li{
 button:hover{
     cursor: pointer;
 }
+.bt{
+    color: brown;
+}
+.btn-default{
+    border:none;
+    background-color:transparent;
+    font-size:18px;
+    font-weight:bold;
+    text-decoration: none;
+    color:inherit;
+}
+.btn-active{
+    border:none;
+    background-color:transparent;
+    font-size:18px;
+    font-weight:bold;
+    text-decoration: none;
+    color:red;
+}

@@ -4,7 +4,8 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    Redirect
   } from "react-router-dom";
 import styles from './styles'
 import Popular from './Popular';
@@ -18,7 +19,7 @@ class Content extends React.Component{
             <div>
                 <Switch>
                     <Route exact path="/">
-                    <Popular islight={islight}></Popular>
+                    <Redirect from="/" to="/Popular" />
                     </Route>
                     <Route path="/Popular">
                     <Popular islight={islight}></Popular>

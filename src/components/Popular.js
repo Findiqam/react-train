@@ -85,41 +85,53 @@ class ContentList extends React.Component{
         );
     }
 }
-//内容列表
+//内容列表无限加载
 class ContentListInfinite extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            //时候加载更多
             hasMore:true,
+            //当前加载页数
             pageNum:1,
+            //最多加载页数
             pageEnd:3,
+            //存放请求到的数据
             items: []
         };
     }
     componentDidMount() {
         
     }
+    //组件props和state更新时调用
     componentDidUpdate (prevProps) {
+        //判断当前要查询的类别是否有改变
         if (this.props.query != prevProps.query) {
+            //有改变，即切换了分类
             this.setState({
+                //把之前分类加载的内容清空，当前页重置为第一页，设置继续加载为true
                 items: [],
                 pageNum: 1,
                 hasMore: true  
             });
         }
     }
+    //请求函数
     search = async () => {
         const {query} = this.props;
-        const {hasMore,pageNum,pageEnd,items}=this.state;
+        const {pageNum,pageEnd,items}=this.state;
+        //如果当前页已经是最后一页或超出，设置加载更多为false，不再继续加载
         if(pageNum>pageEnd){
             this.setState({
                 hasMore:false
             });
             return;
-        }   
+        }
+        //不是最后一页就继续请求数据加载   
         const url = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&type=Repositories&page=${pageNum}`;
         try {
             const res = await axios.get(url);
+            //concat是数组拼接函数，把这次请求到的数据加到之前加载的数据数组里
             this.setState({
                 items: items.concat(res.data.items) 
             })
@@ -127,12 +139,13 @@ class ContentListInfinite extends React.Component{
         } catch (e) {
             
         }
+        //当前页+1
         this.setState({
             pageNum:pageNum+1,
         })
     }
     render() {
-        const {hasMore,pageNum,pageEnd,items} = this.state;
+        const {hasMore,items} = this.state;
         const {islight}=this.props;
         const cards = items.map((item, key) =>
             <Card key={key} source={item} index={key + 1} islight={islight}></Card>
